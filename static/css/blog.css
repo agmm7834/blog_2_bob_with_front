@@ -1,0 +1,318 @@
+/* blog.css (LIGHT + separated posts) */
+:root{
+  --bg: #f6f7fb;
+  --text: #151826;
+  --muted: #5b6173;
+  --muted2:#737a8f;
+
+  --card: #ffffff;
+  --line: rgba(20, 24, 38, .10);
+
+  --accent: #5b5cff;
+  --accent2:#0ea5e9;
+
+  --radius: 16px;
+  --shadow: 0 12px 30px rgba(20,24,38,.08);
+  --shadow2: 0 10px 20px rgba(20,24,38,.06);
+
+  --max: 1100px;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--text);
+  font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans","Helvetica Neue",sans-serif;
+  background:
+    radial-gradient(900px 500px at 10% 0%, rgba(91,92,255,.14), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, rgba(14,165,233,.12), transparent 55%),
+    linear-gradient(180deg, #ffffff, var(--bg) 35%, var(--bg));
+}
+
+/* ===== Layout ===== */
+#content, #sidebar{
+  width: min(var(--max), calc(100% - 32px));
+  margin: 0 auto;
+}
+
+#content{ padding: 28px 0 10px; }
+
+#sidebar{
+  margin: 18px auto 26px;
+  padding: 16px 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow2);
+}
+
+@media (min-width: 980px){
+  body{
+    display:grid;
+    grid-template-columns: 1fr minmax(0, 740px) minmax(0, 320px) 1fr;
+    column-gap: 22px;
+  }
+  #content{
+    grid-column:2;
+    width:100%;
+    margin:0;
+    padding: 44px 0 30px;
+  }
+  #sidebar{
+    grid-column:3;
+    width:100%;
+    margin: 44px 0 30px;
+    position: sticky;
+    top: 18px;
+    height: fit-content;
+  }
+}
+
+/* ===== Typography ===== */
+h1,h2,h3{ margin:0 0 12px; line-height:1.2; letter-spacing:-.01em; }
+h1{ font-size: clamp(28px, 3vw, 42px); }
+h2{ font-size: clamp(18px, 2vw, 24px); }
+p{ margin:0 0 12px; color: var(--text); }
+
+a{
+  color: var(--accent2);
+  text-decoration:none;
+  font-weight:700;
+}
+a:hover{ text-decoration: underline; }
+a:focus-visible{
+  outline: 3px solid rgba(91,92,255,.28);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+/* ===== Post separation (LIST PAGE) =====
+   list.html: h1 then repeating blocks: h2, .date, body paragraphs :contentReference[oaicite:1]{index=1} */
+#content h1{
+  margin-bottom: 18px;
+}
+
+/* Make each post look like a card by styling the title block */
+#content h2{
+  margin: 18px 0 8px;
+}
+
+/* Add extra spacing + separator for every post after the first one */
+#content h1 + h2{ margin-top: 18px; }
+#content h2:not(:first-of-type){
+  padding-top: 18px;
+  border-top: 1px dashed rgba(20,24,38,.16);
+}
+
+/* Title link card */
+#content h2 > a{
+  display:block;
+  padding: 14px 14px;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow2);
+  transition: transform .08s ease, box-shadow .15s ease, border-color .15s ease;
+  color: var(--text);
+}
+#content h2 > a:hover{
+  text-decoration:none;
+  border-color: rgba(14,165,233,.30);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+
+/* Publish line */
+.date{
+  margin: 10px 0 12px;
+  font-size: 13px;
+  color: var(--muted);
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(20,24,38,.04);
+  border: 1px solid rgba(20,24,38,.08);
+}
+.date::before{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius: 99px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 0 4px rgba(91,92,255,.12);
+}
+
+/* Slightly softer text for previews */
+#content h2 ~ p{
+  color: rgba(21,24,38,.92);
+}
+
+/* ===== Detail page =====
+   detail.html: h1 + .date + body + share link + comments :contentReference[oaicite:2]{index=2} */
+#content > h1 + .date{ margin-top: 10px; }
+
+/* Share link as a small button-ish chip */
+#content a[href*="share"]{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(14,165,233,.22);
+  background: rgba(14,165,233,.07);
+}
+#content a[href*="share"]:hover{ text-decoration:none; }
+
+/* ===== Comments ===== */
+.comment{
+  margin: 14px 0;
+  padding: 14px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow2);
+}
+.comment .info{
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--muted);
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+}
+.comment .info::before{ content:"💬"; }
+
+/* ===== Forms =====
+   share.html + comment_form.html :contentReference[oaicite:3]{index=3} :contentReference[oaicite:4]{index=4} */
+form{
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow2);
+}
+
+label{
+  display:block;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+textarea,
+select{
+  width:100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(20,24,38,.12);
+  background: #fbfbfe;
+  color: var(--text);
+  outline:none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+textarea{ min-height: 120px; resize: vertical; }
+
+input:focus, textarea:focus, select:focus{
+  border-color: rgba(14,165,233,.45);
+  box-shadow: 0 0 0 4px rgba(14,165,233,.16);
+}
+
+input[type="submit"], button{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-weight: 900;
+  color: #071018;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  box-shadow: 0 12px 22px rgba(91,92,255,.18);
+  transition: transform .08s ease, box-shadow .15s ease, filter .15s ease;
+}
+input[type="submit"]:hover, button:hover{
+  filter: brightness(1.02);
+  box-shadow: 0 16px 30px rgba(91,92,255,.22);
+}
+input[type="submit"]:active, button:active{ transform: translateY(1px); }
+
+.errorlist{
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  list-style:none;
+  border-radius: 14px;
+  border: 1px solid rgba(255,92,122,.25);
+  background: rgba(255,92,122,.10);
+  color: #571022;
+}
+.helptext{
+  display:block;
+  margin-top: 6px;
+  color: var(--muted2);
+  font-size: 13px;
+}
+
+/* ===== Pagination =====
+   pagination.html :contentReference[oaicite:5]{index=5} */
+.pagination{
+  margin: 18px 0 0;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow2);
+}
+.pagination .step-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 10px;
+  align-items:center;
+  justify-content: space-between;
+}
+.pagination a{
+  display:inline-flex;
+  align-items:center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(20,24,38,.04);
+  border: 1px solid rgba(20,24,38,.10);
+  color: var(--text);
+  font-weight: 900;
+}
+.pagination a:hover{
+  text-decoration:none;
+  border-color: rgba(14,165,233,.30);
+  box-shadow: 0 12px 20px rgba(20,24,38,.08);
+}
+.pagination .current{
+  color: var(--muted);
+  font-weight: 900;
+  padding: 8px 10px;
+}
+
+@media (max-width: 520px){
+  .pagination .step-links{ justify-content:center; }
+  .pagination .current{
+    width:100%;
+    text-align:center;
+    order:3;
+  }
+}
+
+/* Sidebar */
+#sidebar h2{ margin:0 0 6px; font-size: 18px; }
+#sidebar p{ margin:0; color: var(--muted); }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
